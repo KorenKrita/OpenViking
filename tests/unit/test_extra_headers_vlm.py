@@ -190,3 +190,26 @@ class TestVLMConfigExtraHeaders:
 
         result = config._build_vlm_config_dict()
         assert result.get("extra_headers") is None
+
+    def test_vlm_config_accepts_flat_extra_headers(self):
+        """VLMConfig should accept extra_headers as flat config field (legacy style)."""
+        from openviking_cli.utils.config.vlm_config import VLMConfig
+
+        config = VLMConfig(
+            model="gpt-4o",
+            provider="openai",
+            api_key="sk-test",
+            api_base="https://openrouter.ai/api/v1",
+            extra_headers={"HTTP-Referer": "https://example.com", "X-Title": "My App"},
+        )
+
+        # Verify flat extra_headers is stored
+        assert config.extra_headers == {"HTTP-Referer": "https://example.com", "X-Title": "My App"}
+
+        # Verify it's migrated to providers structure
+        config._migrate_legacy_config()
+        assert config.providers["openai"]["extra_headers"] == {"HTTP-Referer": "https://example.com", "X-Title": "My App"}
+
+        # Verify _build_vlm_config_dict includes it
+        result = config._build_vlm_config_dict()
+        assert result["extra_headers"] == {"HTTP-Referer": "https://example.com", "X-Title": "My App"}
