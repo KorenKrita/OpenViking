@@ -63,6 +63,17 @@
     "provider": "volcengine",
     "thinking": false
   },
+  "_vlm_extra_headers_comment": "For OpenAI-compatible providers (e.g., OpenRouter), you can add custom headers like HTTP-Referer and X-Title",
+  "vlm_with_extra_headers_example": {
+    "model": "gpt-4o",
+    "api_key": "{your-api-key}",
+    "api_base": "https://openrouter.ai/api/v1",
+    "provider": "openai",
+    "extra_headers": {
+      "HTTP-Referer": "https://your-site.com",
+      "X-Title": "Your App Name"
+    }
+  },
   "rerank": {
     "ak": null,
     "sk": null,
