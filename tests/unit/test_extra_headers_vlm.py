@@ -208,8 +208,14 @@ class TestVLMConfigExtraHeaders:
 
         # Verify it's migrated to providers structure
         config._migrate_legacy_config()
-        assert config.providers["openai"]["extra_headers"] == {"HTTP-Referer": "https://example.com", "X-Title": "My App"}
+        assert config.providers["openai"]["extra_headers"] == {
+            "HTTP-Referer": "https://example.com",
+            "X-Title": "My App",
+        }
 
         # Verify _build_vlm_config_dict includes it
         result = config._build_vlm_config_dict()
-        assert result["extra_headers"] == {"HTTP-Referer": "https://example.com", "X-Title": "My App"}
+        assert result["extra_headers"] == {
+            "HTTP-Referer": "https://example.com",
+            "X-Title": "My App",
+        }
