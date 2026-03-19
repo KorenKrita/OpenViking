@@ -469,7 +469,7 @@ ov chat
 👉 **[参照: サーバーデプロイ＆ECSセットアップガイド](./docs/en/getting-started/03-quickstart-server.md)**
 
 
-## OpenClawメモリプラグインの詳細
+## OpenClawコンテキストプラグインの詳細
 
 * テストデータセット: LoCoMo10（https://github.com/snap-research/locomo）の長距離対話に基づく効果テスト（ground truthのないcategory5を除いた合計1,540ケース）
 * 実験グループ: ユーザーがOpenVikingを使用する際にOpenClawのネイティブメモリを無効にしない可能性があるため、ネイティブメモリの有効/無効の実験グループを追加

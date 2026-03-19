@@ -467,7 +467,7 @@ ov chat
 👉 **[查看：服务器部署与 ECS 设置指南](./docs/en/getting-started/03-quickstart-server.md)**
 
 
-## OpenClaw 记忆插件详情
+## OpenClaw 上下文插件详情
 
 * 测试集：基于 LoCoMo10(https://github.com/snap-research/locomo) 的长程对话进行效果测试（去除无真值的 category5 后，共 1540 条 case）
 * 实验组：因用户在使用 OpenViking 时可能不关闭 OpenClaw 原生记忆，所以增加是否开关原生记忆的实验组
