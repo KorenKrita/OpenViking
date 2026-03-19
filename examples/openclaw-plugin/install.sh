@@ -623,6 +623,7 @@ configure_openclaw_plugin() {
 
   # Enable plugin (files already deployed to extensions dir by deploy_plugin)
   "${oc_env[@]}" openclaw plugins enable openviking || { err "$(tr "openclaw plugins enable failed" "openclaw 插件启用失败")"; exit 1; }
+  "${oc_env[@]}" openclaw config set plugins.entries.openviking.hooks.allowPromptInjection true
   "${oc_env[@]}" openclaw config set plugins.slots.contextEngine openviking
 
   # Set gateway mode

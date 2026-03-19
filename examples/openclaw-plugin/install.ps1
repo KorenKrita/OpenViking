@@ -377,6 +377,7 @@ function Configure-OpenClawPlugin {
     # Enable plugin (files already deployed to extensions dir by Deploy-Plugin)
     openclaw plugins enable openviking
     if ($LASTEXITCODE -ne 0) { throw "openclaw plugins enable failed (exit code $LASTEXITCODE)" }
+    openclaw config set plugins.entries.openviking.hooks.allowPromptInjection true
     openclaw config set plugins.slots.contextEngine openviking
 
     # Set gateway mode

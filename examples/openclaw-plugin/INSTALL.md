@@ -199,6 +199,7 @@ openclaw status
 
 ```bash
 openclaw plugins enable openviking
+openclaw config set plugins.entries.openviking.hooks.allowPromptInjection true
 openclaw config set gateway.mode local
 openclaw config set plugins.slots.contextEngine openviking
 openclaw config set plugins.entries.openviking.config.mode remote

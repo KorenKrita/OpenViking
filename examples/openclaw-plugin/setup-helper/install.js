@@ -654,6 +654,9 @@ async function configureOpenClawPlugin(pluginPath = PLUGIN_DEST) {
   if (enableResult.code !== 0) throw new Error(`openclaw plugins enable failed (exit code ${enableResult.code})`);
   await oc(["config", "set", "plugins.slots.contextEngine", "openviking"]);
 
+  // Enable prompt injection hooks (required for auto-recall feature)
+  await oc(["config", "set", "plugins.entries.openviking.hooks.allowPromptInjection", "true"]);
+
   // Set gateway mode
   await oc(["config", "set", "gateway.mode", "local"]);
 
