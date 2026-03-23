@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Beijing Volcano Engine Technology Co., Ltd.
 # SPDX-License-Identifier: Apache-2.0
 import abc
+import asyncio
 import json
 import threading
 from dataclasses import dataclass, field
@@ -213,12 +214,14 @@ class NamedQueue:
         except Exception as e:
             logger.warning(f"[NamedQueue] Ack failed for {self.name} msg_id={msg_id}: {e}")
 
-    def _read_queue_message(self) -> Optional[Dict[str, Any]]:
+    async def _read_queue_message_async(self) -> Optional[Dict[str, Any]]:
         """Read and remove one message from the AGFS queue; return parsed dict or None.
 
         Normalises the various return types AGFSClient.read() may produce.
+        Runs the synchronous AGFS read in a thread pool to avoid blocking the event loop.
         """
-        content = self._agfs.read(f"{self.path}/dequeue")
+        loop = asyncio.get_event_loop()
+        content = await loop.run_in_executor(None, self._agfs.read, f"{self.path}/dequeue")
         if not content or content == b"{}":
             return None
         if isinstance(content, bytes):
@@ -244,7 +247,7 @@ class NamedQueue:
         """
         await self._ensure_initialized()
         try:
-            data = self._read_queue_message()
+            data = await self._read_queue_message_async()
             if data is None:
                 return None
             # Capture message ID before passing data to handler (handler may modify it)
@@ -265,7 +268,7 @@ class NamedQueue:
         """Get and remove message from queue without invoking the handler."""
         await self._ensure_initialized()
         try:
-            return self._read_queue_message()
+            return await self._read_queue_message_async()
         except Exception as e:
             logger.debug(f"[NamedQueue] Dequeue raw failed for {self.name}: {e}")
             return None
@@ -286,7 +289,8 @@ class NamedQueue:
         peek_file = f"{self.path}/peek"
 
         try:
-            content = self._agfs.read(peek_file)
+            loop = asyncio.get_event_loop()
+            content = await loop.run_in_executor(None, self._agfs.read, peek_file)
             if not content or content == b"{}":
                 return None
             if isinstance(content, bytes):
@@ -305,7 +309,8 @@ class NamedQueue:
         size_file = f"{self.path}/size"
 
         try:
-            content = self._agfs.read(size_file)
+            loop = asyncio.get_event_loop()
+            content = await loop.run_in_executor(None, self._agfs.read, size_file)
             if not content:
                 return 0
             if isinstance(content, bytes):

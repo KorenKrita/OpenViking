@@ -348,7 +348,7 @@ class SemanticProcessor(DequeueHandlerBase):
             entries = await viking_fs.ls(dir_uri, ctx=ctx)
         except Exception as e:
             logger.warning(f"Failed to list memory directory {dir_uri}: {e}")
-            return
+            raise
 
         file_paths: List[str] = []
         for entry in entries:
@@ -415,7 +415,7 @@ class SemanticProcessor(DequeueHandlerBase):
             logger.info(f"Generated abstract.md and overview.md for {dir_uri}")
         except Exception as e:
             logger.error(f"Failed to write abstract/overview for {dir_uri}: {e}")
-            return
+            raise
 
         await self._vectorize_directory(
             uri=dir_uri,
